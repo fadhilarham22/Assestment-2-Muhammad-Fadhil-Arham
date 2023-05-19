@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contoh Aplikasi Web dengan AJAX</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    #songs-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    #songs-table th, #songs-table td {
+      padding: 8px;
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <table id="songs-table">
+    <thead>
+      <tr>
+        <th>Song</th>
+        <th>Artist</th>
+        <th>Album</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    $(document).ready(function() {
+      $.ajax({
+        url: 'https://itunes.apple.com/search',
+        data: {
+          term: 'radiohead'
+        },
+        method: 'GET',
+        dataType: 'jsonp',
+        success: function(response) {
+          var songs = response.results;
+
+          songs.forEach(function(song) {
+            var title = song.trackName;
+            var artist = song.artistName;
+            var album = song.collectionName;
+
+            var row = $('<tr>');
+            row.append($('<td>').text(title));
+            row.append($('<td>').text(artist));
+            row.append($('<td>').text(album));
+
+            $('#songs-table tbody').append(row);
+          });
+        },
+        error: function() {
+          alert('Terjadi kesalahan dalam mengambil data.');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
