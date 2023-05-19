@@ -1,6 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <title>Form Berdasarkan Atribut API</title>
+</head>
+<body>
+  <form id="api-form">
+    <label for="song">Song:</label>
+    <input type="text" id="song" name="song" required><br>
+
+    <label for="artist">Artist:</label>
+    <input type="text" id="artist" name="artist" required><br>
+
+    <label for="album">Album:</label>
+    <input type="text" id="album" name="album" required><br>
+
+    <input type="submit" value="Submit">
+  </form>
+
+  <script>
+    // Set nilai awal pada form berdasarkan data JSON dari API
+    var jsonData = {
+      "song": "Radio-Head",
+      "artist": "Lift.",
+      "album": "Lifelike"
+    };
+
+    $('#song').val(jsonData.song);
+    $('#artist').val(jsonData.artist);
+    $('#album').val(jsonData.album);
+
+    // Menggunakan AJAX untuk mengirim data form ke API
+    $('#api-form').submit(function(event) {
+      event.preventDefault();
+
+      var formData = {
+        "song": $('#song').val(),
+        "artist": $('#artist').val(),
+        "album": $('#album').val()
+      };
+
+      $.ajax({
+        url: 'https://api.example.com/update',
+        method: 'POST',
+        data: formData,
+        success: function(response) {
+          alert('Data berhasil dikirim ke API!');
+        },
+        error: function() {
+          alert('Terjadi kesalahan dalam mengirim data ke API.');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html>
+<head>
   <title>Contoh Aplikasi Web dengan AJAX</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
