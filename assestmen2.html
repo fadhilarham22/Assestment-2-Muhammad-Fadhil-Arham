@@ -1,6 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <title>Aplikasi Web dengan AJAX</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <form id="search-form">
+    <label for="search-term">Search Term:</label>
+    <input type="text" id="search-term" name="search-term" required>
+    <input type="submit" value="Search">
+  </form>
+
+  <div id="songs-list"></div>
+
+  <script>
+    $(document).ready(function() {
+      // Handler saat form disubmit
+      $('#search-form').submit(function(event) {
+        event.preventDefault();
+
+        var searchTerm = $('#search-term').val();
+
+        // Mengirim permintaan AJAX ke API dengan search term yang dimasukkan
+        $.ajax({
+          url: 'https://itunes.apple.com/search',
+          data: {
+            term: searchTerm
+          },
+          method: 'GET',
+          dataType: 'jsonp',
+          success: function(response) {
+            var songs = response.results;
+
+            // Menghapus konten sebelumnya dari #songs-list
+            $('#songs-list').empty();
+
+            songs.forEach(function(song) {
+              var songTitle = song.trackName;
+              var artistName = song.artistName;
+              var albumName = song.collectionName;
+
+              var songItem = '<div class="song-item">' +
+                '<h3>' + songTitle + '</h3>' +
+                '<p>Artist: ' + artistName + '</p>' +
+                '<p>Album: ' + albumName + '</p>' +
+                '</div>';
+
+              $('#songs-list').append(songItem);
+            });
+          },
+          error: function() {
+            alert('Terjadi kesalahan dalam mengambil data.');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
   <title>Form Berdasarkan Atribut API</title>
 </head>
 <body>
